@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Home = ({ type }) => {
+const Home = () => {
   return (
-    <div>{type}</div>
+    <div>This home page</div>
   )
 }
 
