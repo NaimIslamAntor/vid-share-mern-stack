@@ -56,7 +56,7 @@ const Navbar = () => {
 
          <li className="nav-item dropdown">
           <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src={user.profileImage} alt={user.name} width={30} height={30} />
+          <img src={user.profileImage} alt={user.name} width={30} height={30} className="rounded-circle" />
           </a>
           <ul className="dropdown-menu">
             <li><a className="dropdown-item" data-bs-toggle="modal" data-bs-target="#uploadModal">Upload</a></li>
