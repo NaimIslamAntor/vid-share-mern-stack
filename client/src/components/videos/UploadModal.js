@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from "react-router-dom"
 
 import {
     getStorage,
@@ -9,6 +10,8 @@ import {
 
 import firebase from '../../firebase/firrbase'
 
+
+import axios from 'axios'
 
 const UploadModal = () => {
 
@@ -29,6 +32,7 @@ const UploadModal = () => {
   const [imgUrl, setImgUrl] = useState(null)
   const [videoUrl, setVideoUrl] = useState(null)
 
+  const navigate = useNavigate()
 
 
   const uploadFiles = (file, setProgress, setDownloadUrl) => {
@@ -94,6 +98,49 @@ useEffect(() => {
 
 
 
+const uploadToServer = async (e) => {
+  e.preventDefault()
+
+  const creds = {
+    title,
+    desc,
+    tags,
+    imgUrl,
+    videoUrl,
+  }
+
+
+  try {
+
+    const res = await axios.post('/video/add', creds)
+    
+
+    setImg(null)
+    setVideo(null)
+  
+  
+    setTitle(null)
+    setDesc(null)
+    setTags(null)
+   
+  
+    setImgProgress(0)
+    setVideoProgress(0)
+  
+  
+    setImgUrl(null)
+    setVideoUrl(null)
+
+    navigate(`/video/${res.data._id}`)
+
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
+
+
   
 
   return (
@@ -145,10 +192,8 @@ useEffect(() => {
     <input type="text" className="form-control" placeholder="Tags (,) separated"  onChange={e => setTags(e.target.value)}/>
   </div>
  
-  <button type="submit" className="btn btn-primary">Upload</button>
+  <button type="submit" className="btn btn-primary" disabled={imgProgress === 100 && videoProgress === 100 ? false : true} onClick={uploadToServer}>Upload</button>
 </form>
-
-
         </div>
         <div className="modal-footer">
           <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>

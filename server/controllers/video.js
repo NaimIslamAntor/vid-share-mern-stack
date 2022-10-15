@@ -6,7 +6,8 @@ import createError from '../configs/error.js'
 //get single videos
 export const singleVideo = async (req, res, next) => {
     try {
-        const video = await Video.findById(req.params.id)
+        const video = await Video.findById(req.params.id).populate('userId')
+        console.log(video);
         res.status(200).json(video)
     } catch (error) {
         next(error)
