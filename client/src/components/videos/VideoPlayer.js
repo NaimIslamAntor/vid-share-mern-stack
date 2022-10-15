@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
+import Spiner from '../global/Spiner'
+
+
+import { useSelector } from 'react-redux'
 
 const VideoPlayer = () => {
 
@@ -9,7 +13,10 @@ const VideoPlayer = () => {
        const [video, setVideo] = useState({})
        const [isLoading, setIsLoading] = useState(true)
 
-       console.log(id);
+
+       const { user } = useSelector(state => state.auth)
+
+       
 
 
        useEffect(() => {
@@ -27,11 +34,7 @@ const VideoPlayer = () => {
        if (isLoading) {
         return<div className="col-lg-8 col-md-8 col-sm-12 
         col-12 d-flex justify-content-center align-items-center" style={{height: "700px"}}>
-         
-         <div class="spinner-border text-info" role="status">
-  <span class="visually-hidden">Loading...</span>
-</div>
-
+         <Spiner/>
        </div>
        }
 
@@ -58,7 +61,11 @@ const VideoPlayer = () => {
                {/* follower and follow btn */}
                <div className="d-flex align-items-center">
                <h5 className="mx-2">{video.userId.followers.length} followers</h5>
-                <button className="btn btn-primary">Follow</button>
+
+               {
+                user && <button className="btn btn-primary">Follow</button>
+               }
+                
               </div>
          </div>
 

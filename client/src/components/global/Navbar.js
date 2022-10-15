@@ -59,7 +59,7 @@ const Navbar = () => {
           <img src={user.profileImage} alt={user.name} width={30} height={30} className="rounded-circle" />
           </a>
           <ul className="dropdown-menu">
-            <li><a className="dropdown-item" data-bs-toggle="modal" data-bs-target="#uploadModal">Upload</a></li>
+            <li><a className="dropdown-item" style={{cursor: 'pointer'}} data-bs-toggle="modal" data-bs-target="#uploadModal">Upload</a></li>
             <li><a className="dropdown-item" href="#">My videos</a></li>
             <li><a className="dropdown-item" href="#">Logout</a></li>
           

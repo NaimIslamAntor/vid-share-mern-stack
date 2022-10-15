@@ -24,7 +24,15 @@ const initialState = {
 const videoSlice = createSlice({
   name: 'video',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: (state) => {
+      state.videos = []
+      state.isError = false
+      state.isSuccess = false
+      state.isLoading = false
+      state.errors = []
+  }
+  },
   extraReducers: (builder) => {
     builder.addCase(randomVideos.pending, (state) => {
         state.isLoading = true
@@ -44,6 +52,6 @@ const videoSlice = createSlice({
 
 
 
-export const {} = videoSlice.actions
+export const { reset } = videoSlice.actions
 
 export default videoSlice.reducer
