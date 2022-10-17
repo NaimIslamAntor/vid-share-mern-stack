@@ -3,8 +3,14 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import Spiner from '../global/Spiner'
 
+import { format } from 'timeago.js';
 
 import { useSelector } from 'react-redux'
+
+
+import VideoEditModal from './VideoEditModal';
+
+
 
 const VideoPlayer = () => {
 
@@ -19,16 +25,39 @@ const VideoPlayer = () => {
        
 
 
+       //bring the video
        useEffect(() => {
         const getVideo = async () => {
-          setIsLoading(true)
-          const res = await axios.get(`/video/s/${id}`)
-          setVideo(res.data)
-          setIsLoading(false)
+            try {
+
+              setIsLoading(true)
+              const res = await axios.get(`/video/s/${id}`)
+              setVideo(res.data)
+              setIsLoading(false)
+
+
+            } catch (error) {
+              console.log(error);
+            }
         }
 
         getVideo()
        },[id])
+
+
+       useEffect(() => {
+        const addView = async () => {
+          try {
+            const res = await axios.patch(`/video/s/${id}`)
+          } catch (error) {
+            console.log(error)
+          }
+         
+        }
+
+          addView()
+       },[])
+
 
 
        if (isLoading) {
@@ -39,6 +68,16 @@ const VideoPlayer = () => {
        }
 
   return (
+    <>
+    {
+      user && <VideoEditModal
+        thumbnail={video.imgUrl}
+        title={video.title}
+        desc={video.desc}
+        tags={video.tags}
+        setVideo={setVideo}
+      />
+    }
     <div className="col-lg-8 col-md-8 col-sm-12 col-12">
 
         <video controls className="w-100">
@@ -46,6 +85,15 @@ const VideoPlayer = () => {
                 type="video/mp4"/>
         </video>
          
+         <div className="py-4">
+          <h5>{video.views} {video.views > 1 ? 'views' : 'view'}</h5>
+          <h6>{format(video.createdAt)}</h6>
+
+            {
+              user && video.userId._id === user._id ? 
+              <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button> : ''
+            }
+         </div>
          <div className="d-flex justify-content-between align-items-center">
               {/* img and name */}
               <div className="d-flex align-items-center">
@@ -75,6 +123,8 @@ const VideoPlayer = () => {
         <p>{video.desc}</p>
         <p>{video.tags}</p>
     </div>
+
+    </>
   )
 }
 

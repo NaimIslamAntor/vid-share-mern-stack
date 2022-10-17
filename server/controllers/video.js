@@ -60,7 +60,13 @@ export const updateVideo = async (req, res, next) => {
 
         if (!video) return next(createError(403, 'Video is not avilable'))
 
-        if (video.userId !== req.user.id) return next(createError(403, 'You can only edit your videos'))
+        console.log(video.userId);
+        console.log(req.user.id);
+
+        // if (video.userId !== req.user.id) return next(createError(403, 'You can only edit your videos'))
+
+        if (!video.userId.equals(req.user.id)) return next(createError(403, 'You can only edit your videos'))
+
 
         const updatedVideo = await Video.findByIdAndUpdate(req.params.id, {
             $set: req.body
