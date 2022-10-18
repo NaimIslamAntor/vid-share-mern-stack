@@ -19,7 +19,6 @@ const VideoPlayer = () => {
        const [video, setVideo] = useState({})
        const [isLoading, setIsLoading] = useState(true)
 
-
        const { user } = useSelector(state => state.auth)
 
        

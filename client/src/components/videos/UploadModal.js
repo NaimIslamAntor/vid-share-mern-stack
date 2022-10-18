@@ -11,6 +11,8 @@ import {
 import firebase from '../../firebase/firrbase'
 
 
+import useUpload from '../../hooks/useUpload'
+
 import axios from 'axios'
 
 const UploadModal = () => {
@@ -34,55 +36,16 @@ const UploadModal = () => {
 
   const navigate = useNavigate()
 
-
-  const uploadFiles = (file, setProgress, setDownloadUrl) => {
-    const storage = getStorage(firebase);
-
-    const fileName = new Date().getTime() + file.name;
+  const imgUpload = useUpload(img, setImgProgress, setImgUrl)
+  const videoUpload = useUpload(video, setVideoProgress, setVideoUrl)
 
 
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-
-    uploadTask.on('state_changed', 
-  (snapshot) => {
-    // Observe state change events such as progress, pause, and resume
-    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-
-    setProgress(progress)
-
-    console.log('Upload is ' + progress + '% done');
-    switch (snapshot.state) {
-      case 'paused':
-        console.log('Upload is paused');
-        break;
-      case 'running':
-        console.log('Upload is running');
-        break;
-    }
-  }, 
-  (error) => {
-    // Handle unsuccessful uploads
-    console.log(error);
-  }, 
-  () => {
-    // Handle successful uploads on complete
-    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-      console.log('File available at', downloadURL);
-
-      setDownloadUrl(downloadURL)
-    });
-  }
-);
-
-  }
-
+  
 //thumbnail upload effect
 useEffect(() => {
   if (img) {
-    uploadFiles(img, setImgProgress, setImgUrl)
+    // uploadFiles(img, setImgProgress, setImgUrl)
+    imgUpload()
   }
 },[img])
 
@@ -91,7 +54,8 @@ useEffect(() => {
 useEffect(() => {
 
   if (video) {
-    uploadFiles(video, setVideoProgress, setVideoUrl)
+    // uploadFiles(video, setVideoProgress, setVideoUrl)
+    videoUpload()
   }
 
 },[video])
