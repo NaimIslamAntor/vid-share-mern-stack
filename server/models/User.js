@@ -16,11 +16,6 @@ const userSchema = new Schema({
     type: String,
   },
 
-  followedBy:{
-    type: Number,
-    default: 0,
-  },
-
   followers:{
     type: [String],
     default: []

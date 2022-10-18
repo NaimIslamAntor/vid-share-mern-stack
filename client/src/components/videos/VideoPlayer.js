@@ -59,6 +59,24 @@ const VideoPlayer = () => {
 
 
 
+       const follow = async() => {
+              
+
+        try {
+          const res = axios.patch(`/follow/${video.userId._id}`)
+
+          video.userId.followers.push(user._id)
+          setVideo({...video})
+
+        } catch (error) {
+          console.log(error)
+        }
+
+
+       }
+
+
+
        if (isLoading) {
         return<div className="col-lg-8 col-md-8 col-sm-12 
         col-12 d-flex justify-content-center align-items-center" style={{height: "700px"}}>
@@ -110,7 +128,11 @@ const VideoPlayer = () => {
                <h5 className="mx-2">{video.userId.followers.length} followers</h5>
 
                {
-                user && <button className="btn btn-primary">Follow</button>
+                user && 
+                !video.userId.followers.includes(user._id) ?
+                <button className="btn btn-primary" onClick={follow}>Follow</button>
+                :
+                <button className="btn btn-primary">Unfollow</button>
                }
                 
               </div>

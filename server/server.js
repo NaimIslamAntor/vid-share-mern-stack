@@ -10,7 +10,7 @@ import { errorHandler } from './configs/error.js'
 //imports routes
 import auth from './routes/auth.js'
 import video from './routes/video.js'
-
+import follow from './routes/follow.js'
 
 //initialization
 dotenv.config()
@@ -26,7 +26,7 @@ app.use(cookieParser())
 //register routes
 app.use('/api', auth)
 app.use('/api', video)
-
+app.use('/api', follow)
 
 
 //error handling
